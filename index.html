@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>건강보험 알아서 잘 정리한 한장</title>
+  <meta name="description" content="건강보험 관련 꼭 필요한 링크만 한 장에 모았습니다.">
+
+  <!-- 카카오톡·SNS 공유 미리보기 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="건강보험 알아서 잘 정리한 한장">
+  <meta property="og:description" content="건강보험 관련 꼭 필요한 링크만 한 장에 모았습니다.">
+  <!-- 배포 후 실제 주소/이미지로 바꿔주세요 -->
+  <!-- <meta property="og:url" content="https://아이디.github.io/저장소이름/"> -->
+  <!-- <meta property="og:image" content="https://아이디.github.io/저장소이름/og.png"> -->
+
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+  <style>
+    :root {
+      --bg: #f4f7f9;
+      --card: #ffffff;
+      --text: #1a2633;
+      --muted: #627283;
+      --border: #e3e9ee;
+      --accent: #1f7a6d;        /* 차분한 청록 */
+      --accent-soft: #e6f3f1;
+      --pressed: #eef3f6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1720;
+        --card: #18222d;
+        --text: #e8eef3;
+        --muted: #93a3b2;
+        --border: #263340;
+        --accent: #4fc1ad;
+        --accent-soft: #1b3330;
+        --pressed: #212e3b;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+                   "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      word-break: keep-all;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 28px 16px calc(32px + env(safe-area-inset-bottom));
+    }
+
+    header { padding: 8px 4px 20px; }
+    header .badge {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    header p { margin: 6px 0 0; color: var(--muted); font-size: 15px; }
+
+    h2 {
+      margin: 24px 4px 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
+    ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+
+    a.item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 56px;
+      padding: 14px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: inherit;
+      text-decoration: none;
+      transition: transform .08s ease, background-color .08s ease;
+    }
+    a.item:active { transform: scale(0.98); background: var(--pressed); }
+    a.item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    @media (hover: hover) { a.item:hover { border-color: var(--accent); } }
+
+    .item .text { flex: 1; min-width: 0; }
+    .item .title { display: block; font-size: 17px; font-weight: 600; }
+    .item .desc  { display: block; margin-top: 2px; font-size: 14px; color: var(--muted); }
+    .item .arrow { flex: none; font-size: 26px; line-height: 1; color: var(--accent); }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    footer .logo {
+      display: block;
+      width: 100%;
+      max-width: 240px;
+      height: auto;
+      margin: 0 auto 14px;
+    }
+    /* 다크모드에서는 로고 글자가 묻히지 않도록 흰 바탕 위에 표시 */
+    @media (prefers-color-scheme: dark) {
+      footer .logo {
+        background: #fff;
+        padding: 10px 14px;
+        border-radius: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="badge">한 장 정리</span>
+      <h1>건강보험 알아서 잘 정리한 한장</h1>
+      <p>필요한 항목을 눌러 바로 이동하세요.</p>
+    </header>
+
+    <main id="list"></main>
+
+    <footer>
+      <img class="logo" src="logo.png" alt="국민건강보험 대구수성지사" width="1044" height="220">
+      최종 업데이트: <span id="updated"></span>
+    </footer>
+  </div>
+
+  <script>
+    // ==========================================================
+    //  ✏️ 여기만 수정하세요
+    //  - title: 항목 이름 (필수)
+    //  - url: 이동할 주소 (필수)
+    //  - desc: 한 줄 설명 (선택)
+    //  - category: 분류 (선택, 같은 분류끼리 묶여서 표시됨)
+    // ==========================================================
+    const UPDATED = "2026-10-13";
+
+    const LINKS = [
+      {
+        title: "지역보험료 부과/산정",
+        desc: "가입자의 소득, 재산(전월세 포함)을 기준으로 세대부과 합니다.",
+        url: "https://www.nhis.or.kr/nhis/minwon/wbhapa01000m01.do?mode=view&articleNo=10946878&article.offset=0&articleLimit=12&srSearchVal=%EC%A7%80%EC%97%AD%EB%B3%B4%ED%97%98%EB%A3%8C",
+      },
+      {
+        title: "해외출국자 입국신고",
+        desc: "출국 후 국내 입국한 대상자(내국인)가 입국 당일 진료를 받기 위한 서비스입니다.",
+        url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945796&article.offset=0&articleLimit=12&srSearchVal=%ED%95%B4%EC%99%B8%EC%B6%9C%EA%B5%AD%EC%9E%90",
+      },
+      {
+        title: "피부양자 자격취득",
+        desc: "직장가입자에게 주로 생계를 의존하는 대상자를 피부양자로 취득 신고할 수 있는 제도입니다.",
+        url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945798&article.offset=0&articleLimit=12&srSearchVal=%ED%94%BC%EB%B6%80%EC%96%91%EC%9E%90",
+      },
+      {
+        title: "가까운 검진기관 찾기",
+        desc: "일반 검진 대상: 20대 이상 남녀(2년 주기)",
+        url: "https://www.nhis.or.kr/nhis/healthin/retrieveExmdAdminSearch.do",
+      },
+      {
+        title: "치석제거 진료 정보 조회",
+        desc: "대상: 19세 이상 건강보험 가입자 또는 피부양자",
+        url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945819",
+      },
+      {
+        title: "임신·출산 진료비 잔액 확인",
+        desc: "대상: 임신, 출산(유산, 사산 포함)한 건강보험 가입자 또는 피부양자",
+        url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945817",
+      },
+      {
+        title: "사전연명의료의향서 작성기관 찾기",
+        desc: "대상: 19세 이상 성인 중 연명의료에 관한 본인 의사 사전 등록 희망자",
+        url: "https://www.lst.go.kr/addt/composableorgan.do",
+      },
+    ];
+    // ==========================================================
+
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    const itemHTML = (l) => `
+      <li>
+        <a class="item" href="${esc(l.url)}" target="_blank" rel="noopener">
+          <span class="text">
+            <span class="title">${esc(l.title)}</span>
+            ${l.desc ? `<span class="desc">${esc(l.desc)}</span>` : ""}
+          </span>
+          <span class="arrow" aria-hidden="true">›</span>
+        </a>
+      </li>`;
+
+    // 분류 순서는 처음 등장한 순서대로, 분류 없는 항목은 맨 아래
+    const groups = new Map();
+    for (const l of LINKS) {
+      const key = l.category || "";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(l);
+    }
+    const uncategorized = groups.get("");
+    groups.delete("");
+
+    let html = "";
+    for (const [cat, items] of groups) {
+      html += `<section><h2>${esc(cat)}</h2><ul>${items.map(itemHTML).join("")}</ul></section>`;
+    }
+    if (uncategorized) {
+      html += `<section>${groups.size ? "<h2>기타</h2>" : ""}<ul>${uncategorized.map(itemHTML).join("")}</ul></section>`;
+    }
+    document.getElementById("list").innerHTML = html;
+    document.getElementById("updated").textContent = UPDATED;
+  </script>
+</body>
+</html>

@@ -34,6 +34,7 @@
 
   <style>
     :root {
+      color-scheme: only light;  /* 브라우저 자동 어둡게 기능 끄기 */
       --bg: #f4f7f9;
       --card: #ffffff;
       --text: #1a2633;
@@ -44,6 +45,7 @@
       --pressed: #eef3f6;
     }
     :root[data-theme="dark"] {
+      color-scheme: dark;
       --bg: #0f1720;
       --card: #18222d;
       --text: #e8eef3;
@@ -163,11 +165,10 @@
       margin: 0 auto 14px;
     }
     /* 다크모드에서는 로고 글자가 묻히지 않도록 흰 바탕 위에 표시 */
-    [data-theme="dark"] footer .logo {
-      background: #fff;
-      padding: 10px 14px;
-      border-radius: 10px;
-    }
+    /* 다크모드에서는 글자를 밝게 바꾼 로고로 교체 */
+    footer .logo-dark { display: none; }
+    [data-theme="dark"] footer .logo-light { display: none; }
+    [data-theme="dark"] footer .logo-dark { display: block; }
   </style>
 </head>
 <body>
@@ -184,7 +185,8 @@
     <main id="list"></main>
 
     <footer>
-      <img class="logo" src="logo.png" alt="국민건강보험 대구수성지사" width="1044" height="220">
+      <img class="logo logo-light" src="logo.png" alt="국민건강보험 대구수성지사" width="1044" height="220">
+      <img class="logo logo-dark" src="logo-dark.png" alt="국민건강보험 대구수성지사" width="1044" height="220">
       최종 업데이트: <span id="updated"></span>
     </footer>
   </div>

@@ -116,10 +116,27 @@
     .item .arrow { flex: none; font-size: 26px; line-height: 1; color: var(--accent); }
 
     footer {
-      margin-top: 32px;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
       text-align: center;
       font-size: 12px;
       color: var(--muted);
+    }
+    footer .logo {
+      display: block;
+      width: 100%;
+      max-width: 240px;
+      height: auto;
+      margin: 0 auto 14px;
+    }
+    /* 다크모드에서는 로고 글자가 묻히지 않도록 흰 바탕 위에 표시 */
+    @media (prefers-color-scheme: dark) {
+      footer .logo {
+        background: #fff;
+        padding: 10px 14px;
+        border-radius: 10px;
+      }
     }
   </style>
 </head>
@@ -133,7 +150,10 @@
 
     <main id="list"></main>
 
-    <footer>최종 업데이트: <span id="updated"></span></footer>
+    <footer>
+      <img class="logo" src="logo.png" alt="국민건강보험 대구수성지사" width="1044" height="220">
+      최종 업데이트: <span id="updated"></span>
+    </footer>
   </div>
 
   <script>
@@ -147,11 +167,41 @@
     const UPDATED = "2026-10-13";
 
     const LINKS = [
-      { title: "예시 항목 1", desc: "한 줄 설명을 적어주세요", url: "https://example.com", category: "기본 정보" },
-      { title: "예시 항목 2", desc: "한 줄 설명을 적어주세요", url: "https://example.com", category: "기본 정보" },
-      { title: "예시 항목 3", desc: "한 줄 설명을 적어주세요", url: "https://example.com", category: "보험료" },
-      { title: "예시 항목 4", url: "https://example.com", category: "보험료" },
-      { title: "예시 항목 5", desc: "분류 없이 넣어도 됩니다", url: "https://example.com" },
+      {
+        title: "지역보험료 부과/산정",
+        desc: "가입자의 소득, 재산(전월세 포함)을 기준으로 세대부과 합니다.",
+        url: "https://www.nhis.or.kr/nhis/minwon/wbhapa01000m01.do?mode=view&articleNo=10946878&article.offset=0&articleLimit=12&srSearchVal=%EC%A7%80%EC%97%AD%EB%B3%B4%ED%97%98%EB%A3%8C",
+      },
+      {
+        title: "해외출국자 입국신고",
+        desc: "출국 후 국내 입국한 대상자(내국인)가 입국 당일 진료를 받기 위한 서비스입니다.",
+        url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945796&article.offset=0&articleLimit=12&srSearchVal=%ED%95%B4%EC%99%B8%EC%B6%9C%EA%B5%AD%EC%9E%90",
+      },
+      {
+        title: "피부양자 자격취득",
+        desc: "직장가입자에게 주로 생계를 의존하는 대상자를 피부양자로 취득 신고할 수 있는 제도입니다.",
+        url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945798&article.offset=0&articleLimit=12&srSearchVal=%ED%94%BC%EB%B6%80%EC%96%91%EC%9E%90",
+      },
+      {
+        title: "가까운 검진기관 찾기",
+        desc: "일반 검진 대상: 20대 이상 남녀(2년 주기)",
+        url: "https://www.nhis.or.kr/nhis/healthin/retrieveExmdAdminSearch.do",
+      },
+      {
+        title: "치석제거 진료 정보 조회",
+        desc: "대상: 19세 이상 건강보험 가입자 또는 피부양자",
+        url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945819",
+      },
+      {
+        title: "임신·출산 진료비 잔액 확인",
+        desc: "대상: 임신, 출산(유산, 사산 포함)한 건강보험 가입자 또는 피부양자",
+        url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945817",
+      },
+      {
+        title: "사전연명의료의향서 작성기관 찾기",
+        desc: "대상: 19세 이상 성인 중 연명의료에 관한 본인 의사 사전 등록 희망자",
+        url: "https://www.lst.go.kr/addt/composableorgan.do",
+      },
     ];
     // ==========================================================
 

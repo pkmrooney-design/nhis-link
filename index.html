@@ -10,12 +10,25 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="건강보험 알아서 잘 정리한 한장">
   <meta property="og:description" content="건강보험 관련 꼭 필요한 링크만 한 장에 모았습니다.">
-  <!-- 배포 후 실제 주소/이미지로 바꿔주세요 -->
-  <!-- <meta property="og:url" content="https://아이디.github.io/저장소이름/"> -->
-  <!-- <meta property="og:image" content="https://아이디.github.io/저장소이름/og.png"> -->
+  <meta property="og:url" content="https://pkmrooney-design.github.io/nhis-link/">
+  <meta property="og:image" content="https://pkmrooney-design.github.io/nhis-link/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+  <!-- 기본은 밝은 화면. 휴대폰이 다크모드여도 자동으로 어둡게 바꾸지 않음 -->
+  <meta name="color-scheme" content="only light">
+  <meta name="theme-color" content="#f4f7f9">
+
+  <script>
+    // 사용자가 직접 다크모드를 켰던 경우에만 화면 그리기 전에 적용
+    try {
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.dataset.theme = "dark";
+        document.querySelector('meta[name="color-scheme"]').content = "dark";
+        document.querySelector('meta[name="theme-color"]').content = "#0f1720";
+      }
+    } catch (e) {}
+  </script>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 
@@ -30,17 +43,15 @@
       --accent-soft: #e6f3f1;
       --pressed: #eef3f6;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f1720;
-        --card: #18222d;
-        --text: #e8eef3;
-        --muted: #93a3b2;
-        --border: #263340;
-        --accent: #4fc1ad;
-        --accent-soft: #1b3330;
-        --pressed: #212e3b;
-      }
+    :root[data-theme="dark"] {
+      --bg: #0f1720;
+      --card: #18222d;
+      --text: #e8eef3;
+      --muted: #93a3b2;
+      --border: #263340;
+      --accent: #4fc1ad;
+      --accent-soft: #1b3330;
+      --pressed: #212e3b;
     }
 
     * { box-sizing: border-box; }
@@ -64,6 +75,12 @@
     }
 
     header { padding: 8px 4px 20px; }
+    header .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
     header .badge {
       display: inline-block;
       font-size: 13px;
@@ -72,8 +89,23 @@
       background: var(--accent-soft);
       padding: 4px 10px;
       border-radius: 999px;
-      margin-bottom: 10px;
     }
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+      padding: 6px 12px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .theme-toggle:active { background: var(--pressed); }
     h1 {
       margin: 0;
       font-size: 24px;
@@ -131,19 +163,20 @@
       margin: 0 auto 14px;
     }
     /* 다크모드에서는 로고 글자가 묻히지 않도록 흰 바탕 위에 표시 */
-    @media (prefers-color-scheme: dark) {
-      footer .logo {
-        background: #fff;
-        padding: 10px 14px;
-        border-radius: 10px;
-      }
+    [data-theme="dark"] footer .logo {
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <span class="badge">한 장 정리</span>
+      <div class="top">
+        <span class="badge">한 장 정리</span>
+        <button type="button" class="theme-toggle" id="themeToggle"></button>
+      </div>
       <h1>건강보험 알아서 잘 정리한 한장</h1>
       <p>필요한 항목을 눌러 바로 이동하세요.</p>
     </header>
@@ -238,6 +271,20 @@
     }
     document.getElementById("list").innerHTML = html;
     document.getElementById("updated").textContent = UPDATED;
+
+    // 밝은 화면 / 어두운 화면 전환 (선택은 이 휴대폰에 기억됨)
+    const toggle = document.getElementById("themeToggle");
+    const setTheme = (dark) => {
+      const root = document.documentElement;
+      if (dark) root.dataset.theme = "dark"; else delete root.dataset.theme;
+      document.querySelector('meta[name="color-scheme"]').content = dark ? "dark" : "only light";
+      document.querySelector('meta[name="theme-color"]').content = dark ? "#0f1720" : "#f4f7f9";
+      toggle.textContent = dark ? "☀️ 밝게" : "🌙 어둡게";
+      toggle.setAttribute("aria-label", dark ? "밝은 화면으로 바꾸기" : "어두운 화면으로 바꾸기");
+      try { dark ? localStorage.setItem("theme", "dark") : localStorage.removeItem("theme"); } catch (e) {}
+    };
+    setTheme(document.documentElement.dataset.theme === "dark");
+    toggle.addEventListener("click", () => setTheme(document.documentElement.dataset.theme !== "dark"));
   </script>
 </body>
 </html>

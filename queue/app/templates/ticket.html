@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}내 대기번호 · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="card ticket" id="ticket" data-status="loading">
+  <p class="label">내 대기번호</p>
+  <p class="number"><span id="no">-</span><small>번</small></p>
+  <p class="who" id="who"></p>
+  <p class="status-badge" id="status">불러오는 중…</p>
+  <p class="ahead" id="ahead"></p>
+  <p class="call-msg" id="call-msg" hidden>지금 순서입니다! 직원에게 이 화면을 보여주세요.</p>
+</section>
+
+<button class="btn sound" id="sound-btn" type="button">🔔 호출 알림 소리·진동 켜기</button>
+
+<section class="card">
+  <h2>대기 목록</h2>
+  <ol class="queue" id="queue"></ol>
+  <p class="muted empty" id="queue-empty" hidden>대기 중인 손님이 없습니다.</p>
+</section>
+
+<div class="actions">
+  <button class="btn danger" id="cancel-btn" type="button" hidden>대기 취소</button>
+  <a class="btn primary" id="new-btn" href="/" hidden>새로 접수하기</a>
+</div>
+<p class="fineprint">이 화면은 자동으로 새로고침됩니다. 화면을 닫아도 같은 휴대폰에서 다시 열면 번호가 유지됩니다.</p>
+{% endblock %}
+{% block scripts %}<script src="/static/customer.js?v=1"></script>
+<script>Queue.initTicket({{ token | tojson }});</script>{% endblock %}

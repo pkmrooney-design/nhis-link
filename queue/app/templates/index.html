@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}대기 접수 · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>대기 접수</h1>
+  <p class="muted" id="waiting-count">현재 대기 <b>{{ state.waiting_count }}</b>팀</p>
+
+  <div class="notice closed" id="closed-notice" {% if state.is_open %}hidden{% endif %}>
+    현재 접수가 마감되었습니다.<br>잠시 후 다시 시도해주세요.
+  </div>
+
+  <form id="form" novalidate {% if not state.is_open %}hidden{% endif %}>
+    <label class="field">
+      <span>이름</span>
+      <input id="name" name="name" type="text" autocomplete="off" autocapitalize="off"
+             spellcheck="false" placeholder="예) 홍길동" lang="ko">
+      <small class="hint" id="name-hint" aria-live="polite"></small>
+    </label>
+    <label class="field">
+      <span>전화번호 뒷자리</span>
+      <input id="phone" name="phone" type="text" inputmode="numeric" pattern="[0-9]*"
+             maxlength="4" autocomplete="off" placeholder="4자리">
+      <small class="hint" id="phone-hint" aria-live="polite"></small>
+    </label>
+    <p class="error" id="form-error" role="alert" hidden></p>
+    <button class="btn primary big" id="submit" type="submit" disabled>대기번호 받기</button>
+  </form>
+  <p class="fineprint">입력하신 정보는 순번 안내에만 사용되며, 다른 손님에게는 가려서 표시됩니다.</p>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/customer.js?v=1"></script>
+<script>Queue.initForm();</script>{% endblock %}

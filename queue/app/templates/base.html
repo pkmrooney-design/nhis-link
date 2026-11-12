@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="only light">
+  <meta name="theme-color" content="#f4f7f9">
+  <meta name="robots" content="noindex">
+  <title>{% block title %}{{ store_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css?v=2">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <header class="top">
+    {% if has_logo %}<img class="logo" src="/static/logo.png" alt="">{% endif %}
+    <span class="store">{{ store_name }}</span>
+  </header>
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

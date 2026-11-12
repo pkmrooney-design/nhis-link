@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}관리자 · {{ store_name }}{% endblock %}
+{% block body_class %}admin{% endblock %}
+{% block content %}
+<div class="admin-bar">
+  <h1>대기 현황</h1>
+  <div class="admin-bar-actions">
+    <button class="btn" id="toggle-open" type="button">…</button>
+    <button class="btn ghost" id="logout" type="button">로그아웃</button>
+  </div>
+</div>
+<p class="notice closed" id="closed-banner" hidden>접수 마감 중입니다. 손님은 새로 접수할 수 없습니다.</p>
+
+<section class="stats" id="stats" aria-label="오늘 통계"></section>
+
+<section class="card">
+  <h2>대기 중 <span class="count" id="active-count"></span></h2>
+  <div class="entries" id="active"></div>
+  <p class="muted empty" id="active-empty" hidden>대기 중인 손님이 없습니다.</p>
+</section>
+
+<details class="card">
+  <summary><h2>오늘 처리 내역 <span class="count" id="finished-count"></span></h2></summary>
+  <div class="entries" id="finished"></div>
+</details>
+{% endblock %}
+{% block scripts %}
+<script>window.CSRF = {{ csrf | tojson }};</script>
+<script src="/static/admin.js?v=1"></script>
+{% endblock %}

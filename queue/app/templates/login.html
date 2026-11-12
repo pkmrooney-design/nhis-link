@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}관리자 로그인 · {{ store_name }}{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>관리자 로그인</h1>
+  {% if not configured %}
+  <div class="notice closed">
+    관리자 비밀번호가 설정되지 않았습니다.<br>
+    서버의 <code>.env</code> 파일에 <code>ADMIN_PASSWORD</code> 를 설정한 뒤 다시 시작해주세요.
+  </div>
+  {% else %}
+  <form id="login">
+    <label class="field">
+      <span>비밀번호</span>
+      <input id="password" type="password" autocomplete="current-password" required autofocus>
+    </label>
+    <p class="error" id="login-error" role="alert" hidden></p>
+    <button class="btn primary big" type="submit">로그인</button>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  const f = document.getElementById("login");
+  if (f) f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = document.getElementById("login-error");
+    err.hidden = true;
+    const res = await fetch("/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: document.getElementById("password").value }),
+    });
+    if (res.ok) { location.reload(); return; }
+    const body = await res.json().catch(() => ({}));
+    err.textContent = body.detail || "로그인에 실패했습니다";
+    err.hidden = false;
+  });
+</script>
+{% endblock %}

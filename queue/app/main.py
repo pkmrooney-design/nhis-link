@@ -1,14 +1,16 @@
 import asyncio
+import io
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
+import qrcode
 from fastapi import Body, Depends, FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse, RedirectResponse, StreamingResponse
+from fastapi.responses import JSONResponse, RedirectResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from . import auth, config, db, services
+from . import auth, config, db, netinfo, services
 from .events import broadcaster
 from .models import ACTIVE_STATUSES
 
@@ -127,6 +129,28 @@ def api_cancel(token: str):
     response = JSONResponse({"ok": True})
     response.delete_cookie(TOKEN_COOKIE)
     return response
+
+
+# ---------- 현황판 (TV) ----------
+
+@app.get("/board")
+def board_page(request: Request):
+    url = netinfo.public_base_url(str(request.base_url), request.url.hostname or "", request.url.port)
+    return templates.TemplateResponse(request, "board.html", {"join_url": url})
+
+
+@app.get("/api/board")
+def api_board():
+    return services.get_board_state()
+
+
+@app.get("/qr.png")
+def qr_png(request: Request):
+    url = netinfo.public_base_url(str(request.base_url), request.url.hostname or "", request.url.port)
+    img = qrcode.make(url, error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=12, border=2)
+    buf = io.BytesIO()
+    img.save(buf, "PNG")
+    return Response(buf.getvalue(), media_type="image/png", headers={"Cache-Control": "no-cache"})
 
 
 @app.get("/events")

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="only light">
+  <meta name="robots" content="noindex">
+  <title>대기 현황 · {{ store_name }}</title>
+  <link rel="stylesheet" href="/static/board.css?v=2">
+</head>
+<body>
+  <header class="b-top">
+    <div class="b-brand">
+      {% if has_logo %}<img src="/static/logo.png" alt="">{% endif %}
+      <span>{{ store_name }}</span>
+    </div>
+    <div class="b-clock"><span id="date"></span><b id="time"></b></div>
+  </header>
+
+  <main class="b-main">
+    <section class="b-now" id="now-panel">
+      <h2>지금 순서</h2>
+      <div class="b-now-list" id="called"></div>
+      <p class="b-now-empty" id="called-empty">잠시만 기다려주세요</p>
+    </section>
+
+    <section class="b-side">
+      <div class="b-wait">
+        <h2>대기 중 <span><b id="waiting-count">0</b>팀</span></h2>
+        <ol class="b-wait-list" id="waiting"></ol>
+        <p class="b-wait-more" id="waiting-more" hidden></p>
+        <p class="b-wait-empty" id="waiting-empty" hidden>대기 중인 손님이 없습니다</p>
+      </div>
+
+      <div class="b-join" id="join">
+        <img class="b-qr" src="/qr.png" alt="접수 QR코드">
+        <div>
+          <p class="b-join-title">휴대폰 카메라로<br>QR코드를 찍어 접수하세요</p>
+          <p class="b-join-url">{{ join_url }}</p>
+        </div>
+      </div>
+      <div class="b-closed" id="closed" hidden>
+        <p>오늘 접수가 마감되었습니다</p>
+      </div>
+    </section>
+  </main>
+
+  <button class="b-sound" id="sound-btn" type="button">🔊 호출 안내 소리 켜기 (화면을 한 번 눌러주세요)</button>
+
+  <script src="/static/board.js?v=2"></script>
+</body>
+</html>

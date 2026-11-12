@@ -174,6 +174,25 @@ def get_public_state() -> dict:
         return {"is_open": is_open(s), "waiting_count": len(queue), "queue": queue}
 
 
+def get_board_state() -> dict:
+    """현황판(TV)용. 호출된 번호는 최근 호출 순, 대기 번호는 접수 순."""
+    with db.SessionLocal() as s:
+        entries = _active_today(s, today())
+        called = sorted(
+            (e for e in entries if e.status == CALLED),
+            key=lambda e: e.called_at or e.created_at,
+            reverse=True,
+        )
+        waiting = [e for e in entries if e.status == WAITING]
+        item = lambda e: {"no": e.ticket_no, "name": mask_name(e.name)}  # noqa: E731
+        return {
+            "is_open": is_open(s),
+            "called": [item(e) for e in called],
+            "waiting": [item(e) for e in waiting],
+            "waiting_count": len(waiting),
+        }
+
+
 def get_entry_by_token(token: str) -> QueueEntry | None:
     if not token:
         return None

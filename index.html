@@ -115,6 +115,18 @@
       letter-spacing: -0.02em;
       line-height: 1.3;
     }
+    .title-em {
+  font-size: 1.3em;
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.title-al,
+.title-jal {
+  font-size: 1.3em;
+  font-weight: 900;
+  color: var(--accent);
+}
     header p { margin: 6px 0 0; color: var(--muted); font-size: 15px; }
 
     h2 {
@@ -178,7 +190,14 @@
         <span class="badge">한 장 정리</span>
         <button type="button" class="theme-toggle" id="themeToggle"></button>
       </div>
-      <h1>건강보험 알아서 잘 정리한 한장</h1>
+<h1>
+  <span class="title-em">건강보험</span>
+  <span class="title-al">알</span>아서
+  <span class="title-jal">잘</span>
+  정리한
+  <span class="title-em">한장</span>
+</h1>
+      
       <p>필요한 항목을 눌러 바로 이동하세요.</p>
     </header>
 
@@ -218,8 +237,8 @@
         url: "https://www.nhis.or.kr/nhis/minwon/minwonServiceBoard.do?mode=view&articleNo=10945798&article.offset=0&articleLimit=12&srSearchVal=%ED%94%BC%EB%B6%80%EC%96%91%EC%9E%90",
       },
       {
-        title: "가까운 검진기관 찾기",
-        desc: "일반 검진 대상: 20대 이상 남녀(2년 주기)",
+        title: "가까운 검진기관/병의원 찾기",
+        desc: "일반 검진 대상: 20세 이상 남녀",
         url: "https://www.nhis.or.kr/nhis/healthin/retrieveExmdAdminSearch.do",
       },
       {
@@ -236,6 +255,11 @@
         title: "사전연명의료의향서 작성기관 찾기",
         desc: "대상: 19세 이상 성인 중 연명의료에 관한 본인 의사 사전 등록 희망자",
         url: "https://www.lst.go.kr/addt/composableorgan.do",
+      },
+      {
+        title: "국민건강보험 상담 챗봇 건강이지(Easy)",
+        desc: "궁금한 점은 채팅으로 물어보고 답을 받아보세요!",
+        url: "https://chatbot.nhis.or.kr/api/",
       },
     ];
     // ==========================================================

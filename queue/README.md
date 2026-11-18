@@ -20,6 +20,14 @@
    ```
 4. 같은 와이파이에 연결된 휴대폰·TV·태블릿의 브라우저 주소창에 이 주소를 입력합니다. 서버 PC에서는 `http://localhost:8000` 으로도 열립니다.
 
+**바탕화면 바로가기 (이 PC에서 바로 열기)**
+
+```bash
+.venv\Scripts\python scripts\make_shortcuts.py
+```
+
+바탕화면에 `대기순번 - 손님 접수`, `대기순번 - 현황판(TV)`, `대기순번 - 관리자` 바로가기 3개가 생깁니다. 더블클릭하면 서버가 꺼져 있을 때 자동으로 켜고(작업표시줄에 최소화된 창), 브라우저로 해당 화면(`http://localhost:8000/...`)을 엽니다. 최소화된 서버 창을 닫으면 사이트도 꺼집니다.
+
 Python이 없으면 https://www.python.org/downloads/ 에서 설치하세요. 설치 화면에서 "Add python.exe to PATH" 를 꼭 체크해야 합니다. 아래 1~3번은 직접 명령어로 실행하는 방법입니다.
 
 ## 1. 설치 (처음 한 번)
@@ -137,6 +145,8 @@ app/
   templates/    화면 HTML
   static/       CSS, JS, 로고
 scripts/make_qr.py   QR코드 생성
+scripts/make_shortcuts.py  바탕화면 바로가기 3개 만들기
+scripts/open_page.py       바로가기가 실행: 서버를 켜고 화면 열기
 run.py               실행 스크립트 (접속 주소 출력, 처음 실행 시 비밀번호 설정)
 start.bat            Windows에서 더블클릭으로 실행
 tests/               자동 테스트

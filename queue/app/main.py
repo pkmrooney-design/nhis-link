@@ -18,6 +18,7 @@ log = logging.getLogger("queue")
 BASE = Path(__file__).parent
 TOKEN_COOKIE = "qtoken"
 PURGE_INTERVAL_SEC = 6 * 60 * 60
+LOGIN_FAIL_DELAY_SEC = 1  # 비밀번호가 틀리면 응답을 늦춰 무차별 대입 속도를 늦춤
 
 
 async def _purge_loop() -> None:
@@ -166,10 +167,12 @@ def qr_png(request: Request, to: str = ""):
 @app.get("/events")
 async def events(request: Request):
     async def stream():
-        yield "retry: 3000\n\n"
+        # 화면은 ping/change 를 실제로 받아야 실시간 연결로 판단함
+        # (중간 프록시가 스트림을 모아두면 받지 못해 5초 확인으로 전환)
+        yield "retry: 3000\nevent: ping\ndata: 1\n\n"
         while not await request.is_disconnected():
             changed = await broadcaster.wait(15)
-            yield "event: change\ndata: 1\n\n" if changed else ": ping\n\n"
+            yield "event: change\ndata: 1\n\n" if changed else "event: ping\ndata: 1\n\n"
 
     return StreamingResponse(
         stream(),
@@ -211,14 +214,21 @@ def admin_links(request: Request):
 
 
 @app.post("/admin/login")
-async def admin_login(payload: dict = Body(...)):
+async def admin_login(request: Request, payload: dict = Body(...)):
+    if auth.login_locked():
+        return JSONResponse(
+            {"detail": "로그인 실패가 너무 많아 잠시 막혔습니다. 10분 뒤 다시 시도해주세요"},
+            status_code=429,
+        )
     if not auth.check_password(str(payload.get("password", ""))):
-        await asyncio.sleep(1)  # 무차별 대입 속도 늦추기
+        auth.record_failure()
+        await asyncio.sleep(LOGIN_FAIL_DELAY_SEC)
         return JSONResponse({"detail": "비밀번호가 올바르지 않습니다"}, status_code=401)
     value, _ = auth.new_session_cookie()
     response = JSONResponse({"ok": True})
     response.set_cookie(
-        auth.COOKIE, value, max_age=auth.MAX_AGE, httponly=True, samesite="strict", path="/admin"
+        auth.COOKIE, value, max_age=auth.MAX_AGE, httponly=True, samesite="strict", path="/admin",
+        secure=request.url.scheme == "https",
     )
     return response
 

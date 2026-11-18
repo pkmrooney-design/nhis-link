@@ -32,14 +32,16 @@ const Queue = (() => {
 
   // 변경 신호를 SSE 로 받고, 연결이 안 되면 5초마다 직접 확인
   function subscribe(onChange) {
-    let live = false;
+    // 최근 20초 안에 신호를 실제로 받았을 때만 실시간으로 봄.
+    // 연결은 됐는데 신호가 안 오면(일부 프록시가 모아두는 경우) 5초마다 직접 확인
+    let lastMsg = 0;
     if ("EventSource" in window) {
       const es = new EventSource("/events");
-      es.addEventListener("change", onChange);
-      es.onopen = () => { live = true; onChange(); };
-      es.onerror = () => { live = false; };
+      es.addEventListener("ping", () => { lastMsg = Date.now(); });
+      es.addEventListener("change", () => { lastMsg = Date.now(); onChange(); });
+      es.onerror = () => { lastMsg = 0; };
     }
-    setInterval(() => { if (!live) onChange(); }, 5000);
+    setInterval(() => { if (Date.now() - lastMsg > 20000) onChange(); }, 5000);
     setInterval(onChange, 30000); // 혹시 놓친 신호 대비
     document.addEventListener("visibilitychange", () => { if (!document.hidden) onChange(); });
   }

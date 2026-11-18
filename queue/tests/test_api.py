@@ -73,3 +73,14 @@ def test_closed_rejects_registration(admin):
     r = admin.post("/api/tickets", json={"name": "홍길동", "phone": "1234"})
     assert r.status_code == 409
     assert "접수가 마감" in admin.get("/").text
+
+
+def test_login_lockout(client, monkeypatch):
+    from app import auth
+
+    monkeypatch.setattr(auth, "_failures", __import__("collections").deque())
+    monkeypatch.setattr("app.main.LOGIN_FAIL_DELAY_SEC", 0)
+    for _ in range(auth.MAX_FAILS):
+        assert client.post("/admin/login", json={"password": "wrong"}).status_code == 401
+    # 잠긴 동안에는 맞는 비밀번호도 거절
+    assert client.post("/admin/login", json={"password": "test-pw"}).status_code == 429

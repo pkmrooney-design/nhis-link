@@ -133,14 +133,16 @@
     location.reload();
   });
 
-  let live = false;
+  // 최근 20초 안에 신호를 실제로 받았을 때만 실시간으로 봄.
+  // 연결은 됐는데 신호가 안 오면(일부 프록시가 모아두는 경우) 5초마다 직접 확인
+  let lastMsg = 0;
   if ("EventSource" in window) {
     const es = new EventSource("/events");
-    es.addEventListener("change", refresh);
-    es.onopen = () => { live = true; refresh(); };
-    es.onerror = () => { live = false; };
+    es.addEventListener("ping", () => { lastMsg = Date.now(); });
+    es.addEventListener("change", () => { lastMsg = Date.now(); refresh(); });
+    es.onerror = () => { lastMsg = 0; };
   }
-  setInterval(() => { if (!live) refresh(); }, 5000);
+  setInterval(() => { if (Date.now() - lastMsg > 20000) refresh(); }, 5000);
   setInterval(render, 30000); // 대기 시간(분) 표시 갱신
   document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
   refresh();

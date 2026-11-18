@@ -34,3 +34,22 @@ def test_public_url(monkeypatch):
     assert netinfo.public_base_url("http://192.168.0.5:8000/", "192.168.0.5", 8000) == "http://192.168.0.5:8000/"
     monkeypatch.setattr(config, "PUBLIC_URL", "https://queue.example.com")
     assert netinfo.public_base_url("http://localhost:8000/", "localhost", 8000) == "https://queue.example.com/"
+
+
+def test_qr_targets(client):
+    for to in ("", "board", "admin"):
+        r = client.get(f"/qr.png?to={to}")
+        assert r.status_code == 200 and r.content[:4] == b"\x89PNG"
+    assert client.get("/qr.png?to=https://evil.example").status_code == 404
+
+
+def test_links_page_requires_login(client):
+    r = client.get("/admin/links", follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"] == "/admin"
+
+
+def test_links_page(admin, monkeypatch):
+    monkeypatch.setattr(config, "PUBLIC_URL", "http://192.168.0.10:8000")
+    page = admin.get("/admin/links").text
+    for url in ("http://192.168.0.10:8000/", "http://192.168.0.10:8000/board", "http://192.168.0.10:8000/admin"):
+        assert url in page

@@ -201,3 +201,26 @@ details[open].card summary { margin-bottom: 12px; }
   .entry-actions { grid-column: 1; grid-row: auto; }
   .entry-actions .btn { flex: 1; }
 }
+
+/* ---------- 접속 주소 (/admin/links) ---------- */
+.notice.info { background: var(--accent-soft); color: var(--text); font-weight: 500; }
+.links { display: flex; flex-direction: column; gap: 0; }
+.link-card { display: flex; gap: 24px; align-items: center; }
+.link-qr { width: 180px; height: 180px; flex: none; image-rendering: pixelated; }
+.link-body { min-width: 0; }
+.link-url {
+  margin: 0 0 8px; font-size: 22px; font-weight: 800; color: var(--accent);
+  word-break: break-all; font-variant-numeric: tabular-nums;
+}
+.link-actions { display: flex; gap: 8px; margin-top: 12px; }
+@media (max-width: 560px) {
+  .link-card { flex-direction: column; text-align: center; }
+  .link-actions { justify-content: center; }
+}
+@media print {
+  .no-print, .top { display: none !important; }
+  body { background: #fff; }
+  .wrap { max-width: none; padding: 0; }
+  .link-card { break-inside: avoid; border: 1px solid #ccc; }
+  .link-qr { width: 6cm; height: 6cm; }
+}

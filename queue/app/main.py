@@ -133,10 +133,18 @@ def api_cancel(token: str):
 
 # ---------- 현황판 (TV) ----------
 
+def _base_url(request: Request) -> str:
+    """손님 휴대폰·TV 가 접속할 주소 (끝에 / 포함)."""
+    return netinfo.public_base_url(str(request.base_url), request.url.hostname or "", request.url.port)
+
+
+# QR코드로 만들 수 있는 화면 (임의 주소를 QR로 만들지 못하도록 고정)
+QR_TARGETS = {"": "", "board": "board", "admin": "admin"}
+
+
 @app.get("/board")
 def board_page(request: Request):
-    url = netinfo.public_base_url(str(request.base_url), request.url.hostname or "", request.url.port)
-    return templates.TemplateResponse(request, "board.html", {"join_url": url})
+    return templates.TemplateResponse(request, "board.html", {"join_url": _base_url(request)})
 
 
 @app.get("/api/board")
@@ -145,8 +153,10 @@ def api_board():
 
 
 @app.get("/qr.png")
-def qr_png(request: Request):
-    url = netinfo.public_base_url(str(request.base_url), request.url.hostname or "", request.url.port)
+def qr_png(request: Request, to: str = ""):
+    if to not in QR_TARGETS:
+        raise HTTPException(404)
+    url = _base_url(request) + QR_TARGETS[to]
     img = qrcode.make(url, error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=12, border=2)
     buf = io.BytesIO()
     img.save(buf, "PNG")
@@ -178,6 +188,26 @@ def admin_page(request: Request):
             request, "login.html", {"configured": bool(config.ADMIN_PASSWORD)}
         )
     return templates.TemplateResponse(request, "admin.html", {"csrf": session["csrf"]})
+
+
+@app.get("/admin/links")
+def admin_links(request: Request):
+    """손님·현황판·관리자 접속 주소와 QR코드를 한 장에 모아 보여주고 인쇄하는 화면."""
+    if auth.read_session(request) is None:
+        return RedirectResponse("/admin", status_code=303)
+    base = _base_url(request)
+    links = [
+        {"key": "", "title": "손님 접수", "url": base,
+         "desc": "매장 입구·카운터에 붙여두는 QR코드입니다. 손님이 찍어서 대기번호를 받습니다."},
+        {"key": "board", "title": "현황판 (TV)", "url": base + "board",
+         "desc": "TV나 모니터의 브라우저에서 엽니다. 호출 번호와 대기 목록이 나옵니다."},
+        {"key": "admin", "title": "관리자", "url": base + "admin",
+         "desc": "직원 휴대폰·태블릿에서 엽니다. 비밀번호로 로그인합니다. 손님에게 공개하지 마세요."},
+    ]
+    return templates.TemplateResponse(
+        request, "links.html",
+        {"links": links, "auto": not config.PUBLIC_URL, "ip": netinfo.lan_ip()},
+    )
 
 
 @app.post("/admin/login")
